@@ -15,8 +15,7 @@ public class SimpleDownload {
     public static boolean downloadFile(String downloadUrl, String downloadPath) {
         try {
             URL url = new URL(downloadUrl);
-            URLConnection urlConnection = url.openConnection();
-            HttpURLConnection httpURLConnection = (HttpURLConnection)urlConnection;
+            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
             httpURLConnection.setRequestMethod("POST");
             httpURLConnection.setRequestProperty("Charset", "UTF-8");
             httpURLConnection.connect();
@@ -25,7 +24,6 @@ public class SimpleDownload {
 
             String filePathUrl = httpURLConnection.getURL().getFile();
             String fileFullName = filePathUrl.substring(filePathUrl.lastIndexOf(File.separatorChar) + 1);
-            URLConnection urlConnection1 = url.openConnection();
             BufferedInputStream bufferedInputStream = new BufferedInputStream(httpURLConnection.getInputStream());
             String path = downloadPath + File.separatorChar + fileFullName;
             File file = new File(path);
