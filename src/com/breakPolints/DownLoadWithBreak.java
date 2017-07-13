@@ -9,8 +9,10 @@ import java.util.concurrent.Executors;
 /**
  * Created by Administrator on 2017/7/13 0013.
  */
-public class DownLoad {
+public class DownLoadWithBreak {
 
+    private int threadCount = 3;
+    private int finishedCount = 0;
     private Executor threadPool = Executors.newFixedThreadPool(3);
 
     static class DownloadRunnable implements Runnable {
@@ -34,12 +36,12 @@ public class DownLoad {
         @Override
         public void run() {
 
-            File progressFile = new File(threadId + ".txt");
-
-            //如果进度临时文件存在
+            File progressFile = new File("E:/1.txt");
+            progressFile.mkdir();
+            //File progressFile = new File("E:/"+Integer.toString(threadId) + ".txt");
             if (progressFile.exists()) {
 
-                //创建文件输入流
+
                 FileInputStream fis = null;
                 try {
                     fis = new FileInputStream(progressFile);
@@ -59,10 +61,15 @@ public class DownLoad {
                     InputStream in = con.getInputStream();
                     byte[] b = new byte[1024 * 4];
                     int len = 0;
+                    int total = 0;
                     while ((len = in.read(b)) != -1) {
                         access.write(b, 0, len);
+                        total += len;
+                        RandomAccessFile progressRaf = new RandomAccessFile(progressFile, "rwd");
+                        progressRaf.write((total + "").getBytes());
+                        progressRaf.close();
                     }
-                    System.out.println("下载成功");
+                    System.out.println(Thread.currentThread().getName()+"下载成功");
                     if (access != null) {
                         access.close();
                     }
@@ -75,7 +82,8 @@ public class DownLoad {
                     e.printStackTrace();
                 }
             }
-
+            File file = new File("E:/"+Integer.toString(threadId)+".txt");
+            file.mkdir();
         }
     }
 
@@ -123,6 +131,10 @@ public class DownLoad {
         public static void main(String[] args) {
             com.download.DownLoad downLoad = new com.download.DownLoad();
             downLoad.downLoadFile("http://localhost:8080/1.png", "E:");
+            File file = new File("E:/"+Integer.toString(1)+".txt");
+            file.mkdir();
+            /*File file = new File("E:/1.txt");
+            file.mkdir();*/
         }
 
 }
