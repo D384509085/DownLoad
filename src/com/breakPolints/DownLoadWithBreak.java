@@ -131,10 +131,6 @@ public class DownLoadWithBreak {
         public static void main(String[] args) {
             com.download.DownLoad downLoad = new com.download.DownLoad();
             downLoad.downLoadFile("http://localhost:8080/1.png", "E:");
-            File file = new File("E:/"+Integer.toString(1)+".txt");
-            file.mkdir();
-            /*File file = new File("E:/1.txt");
-            file.mkdir();*/
         }
 
 }
